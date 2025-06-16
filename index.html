@@ -79,7 +79,7 @@
         <section id="low-feedback" class="py-12 bg-slate-100 rounded-xl">
             <div class="max-w-4xl mx-auto px-4">
                 <h2 class="text-3xl font-bold text-center text-[#073B4C] mb-4">Detailed Breakdown: Feedback Volume Categories</h2>
-                <p class="text-center text-slate-600 mb-8">This table categorizes feedback volume per location, highlighting stores with "Below Average" performance based on group metrics.</p>
+                <p class="text-center text-slate-600 mb-8">This table categorizes feedback volume per location, highlighting stores with "Below Average" performance based on group metrics, and flagging low response rates.</p>
                 <div class="bg-white p-6 rounded-lg shadow-md overflow-x-auto">
                     <table class="w-full text-left" id="feedback-table">
                         <thead class="bg-slate-50 border-b">
@@ -260,12 +260,15 @@
                 row.className = 'border-b hover:bg-slate-50';
                 
                 const isBelowAverageVolume = store.volumeCategory === 'Below Average';
+                const isLowResponse = store.response < 70; // New check for response rate
+
                 const nameCellClass = isBelowAverageVolume ? 'p-4 text-[#FF6B6B] font-semibold' : 'p-4';
-                
+                const responseCellClass = `p-4 text-center ${isLowResponse ? 'text-[#FF6B6B] font-semibold' : ''}`; // Apply highlight if low
+
                 row.innerHTML = `
                     <td class="${nameCellClass}">${store.name}</td>
                     <td class="p-4 text-center ${isBelowAverageVolume ? 'text-[#FF6B6B] font-semibold' : ''}">${store.volumeCategory}</td>
-                    <td class="p-4 text-center">${store.response}%</td>
+                    <td class="${responseCellClass}">${store.response}%</td>
                 `;
                 tableBody.appendChild(row);
             });
